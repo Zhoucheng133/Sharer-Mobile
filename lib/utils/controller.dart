@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:get/get.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageType{
@@ -28,10 +31,9 @@ class Controller extends GetxController {
   late SharedPreferences prefs;
 
   Rx<Pages> page=Rx(Pages.files);
+  RxString filesDir="".obs;
 
-  Future<void> init() async {
-    prefs=await SharedPreferences.getInstance();
-
+  void initLanguage(){
     int? langIndex=prefs.getInt("langIndex");
 
     if(langIndex==null){
@@ -45,6 +47,23 @@ class Controller extends GetxController {
     }else{
       lang.value=supportedLocales[langIndex];
     }
+  }
+
+  Future<void> initFiles() async {
+    final docDir=await getApplicationDocumentsDirectory();
+    final targetPath = p.join(docDir.path, "files");
+    final dir = Directory(targetPath);
+    if (!await dir.exists()) {
+      await dir.create(recursive: true); 
+    }
+    filesDir.value = targetPath;
+  }
+
+  Future<void> init() async {
+    prefs=await SharedPreferences.getInstance();
+
+    initLanguage();
+    await initFiles();
   }
 
   void changeLanguage(int index){
