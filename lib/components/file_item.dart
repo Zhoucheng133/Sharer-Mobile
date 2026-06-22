@@ -51,18 +51,24 @@ class _FileItemState extends State<FileItem> {
     }
   }
 
-  Future<void> delete() async {
+  Future<void> delete(BuildContext context) async {
     final confirm = await showOkCancelDialog(context, "delete".tr, "${'delete'.tr}: ${p.basename(widget.file.path)}", okText: "delete".tr);
     if(!confirm) return;
-    if(widget.file.isDir){
-      await deleteDirectory();
-    } else {
-      await deleteFile();
+    try {
+      if(widget.file.isDir){
+        await deleteDirectory();
+      } else {
+        await deleteFile();
+      }
+    } catch (e) {
+      if(context.mounted){
+        showOkDialog(context, "error".tr, e.toString());
+      }
     }
     widget.refresh();
   }
 
-  Future<void> rename() async {
+  Future<void> rename(BuildContext context) async {
     final newName = await showInputDialog(context, title: "rename".tr, hint: "new_name".tr, initialValue: p.basename(widget.file.path), okText: "rename".tr);
     if (newName == null || newName.trim().isEmpty) return;
 
@@ -76,7 +82,11 @@ class _FileItemState extends State<FileItem> {
         await File(widget.file.path).rename(newPath);
       }
       widget.refresh();
-    } catch (_) {}
+    } catch (e) {
+      if(context.mounted){
+        showOkDialog(context, "error".tr, e.toString());
+      }
+    }
   }
 
   void handleClick(BuildContext context) async {
@@ -87,8 +97,8 @@ class _FileItemState extends State<FileItem> {
         mainAxisSize: .min,
         children: [
           SheetItem(label: "share".tr, iconData: FontAwesomeIcons.shareFromSquare, callback: share),
-          SheetItem(label: "rename".tr, iconData: FontAwesomeIcons.penToSquare, callback: rename,),
-          SheetItem(label: "delete".tr, iconData: FontAwesomeIcons.trash, callback: delete,),
+          SheetItem(label: "rename".tr, iconData: FontAwesomeIcons.penToSquare, callback: () => rename(context),),
+          SheetItem(label: "delete".tr, iconData: FontAwesomeIcons.trash, callback: () => delete(context),),
           SizedBox(height: MediaQuery.of(context).padding.bottom,),
         ],
       )
