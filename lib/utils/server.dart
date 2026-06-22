@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:io';
 import 'dart:isolate';
 import "package:ffi/ffi.dart";
 import 'package:flutter/foundation.dart';
@@ -13,7 +14,7 @@ class Server {
   Isolate? isolate;
 
   static void runHandler(List<String> params){
-    final dynamicLib = DynamicLibrary.process();
+    final dynamicLib = Platform.isIOS ? DynamicLibrary.process() : DynamicLibrary.open("libserver.so");
     StartServer startServer=dynamicLib
         .lookup<NativeFunction<StartServerFunc>>('StartServer')
         .asFunction();
@@ -27,8 +28,8 @@ class Server {
   }
 
   static void stopHandler(List? params) {
-    final lib = DynamicLibrary.process();
-    final stop = lib
+    final dynamicLib = Platform.isIOS ? DynamicLibrary.process() : DynamicLibrary.open("libserver.so");
+    final stop = dynamicLib
         .lookup<NativeFunction<StopServerFunc>>('StopServer')
         .asFunction<StopServer>();
     stop();
