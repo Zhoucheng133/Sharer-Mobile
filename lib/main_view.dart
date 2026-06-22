@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:local_sink/utils/controller.dart';
+import 'package:local_sink/utils/dialogs.dart';
 import 'package:local_sink/views/files_view.dart';
 import 'package:local_sink/views/server_view.dart';
 import 'package:local_sink/views/settings_view.dart';
@@ -32,6 +36,29 @@ class _MainViewState extends State<MainView> {
         fileViewKey.currentState?.getFiles();
       },
     );
+  }
+
+  Future<void> uploadFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.pickFiles(allowMultiple: true);
+    if (result == null) return;
+
+    final targetDir = controller.nowDir.value;
+    
+    for (final path in result.paths) {
+      if (path == null) continue;
+      final file = File(path);
+      final fileName = p.basename(path);
+      final targetPath = p.join(targetDir, fileName);
+      try {
+        await file.copy(targetPath);
+      } catch (e) {
+        if(context.mounted){
+          showOkDialog(context, "error".tr, e.toString());
+        }
+      }
+    }
+
+    fileViewKey.currentState?.getFiles();
   }
 
   @override
@@ -73,6 +100,13 @@ class _MainViewState extends State<MainView> {
             controller.page.value=Pages.values[index];
           },
         ),
+        floatingActionButton: controller.page.value==Pages.files ? FloatingActionButton(
+          child: FaIcon(
+            FontAwesomeIcons.plus,
+            size: 18,
+          ),
+          onPressed: ()=>uploadFile(context)
+        ) : null,
         body: IndexedStack(
           index: controller.page.value.index,
           children: [
