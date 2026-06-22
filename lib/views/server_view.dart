@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:local_sink/utils/controller.dart';
+import 'package:local_sink/utils/dialogs.dart';
 import 'package:local_sink/utils/server.dart';
 
 class ServerView extends StatefulWidget {
@@ -77,10 +79,18 @@ class _ServerViewState extends State<ServerView> {
             ],
           ),
           const SizedBox(height: 10,),
-          Text(
-            "$address:8080",
-            style: TextStyle(
-              fontSize: 15
+          GestureDetector(
+            onTap: () async {
+              await FlutterClipboard.copy("$address:8080");
+              if(context.mounted){
+                showOkDialog(context, "copySuccess".tr, "copySharedLinkSuccess".tr);
+              }
+            },
+            child: Text(
+              "$address:8080",
+              style: TextStyle(
+                fontSize: 15
+              ),
             ),
           ),
           const SizedBox(height: 20,),
