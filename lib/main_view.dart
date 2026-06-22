@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:local_sink/utils/controller.dart';
+import 'package:local_sink/views/files_view.dart';
+import 'package:local_sink/views/server_view.dart';
+import 'package:local_sink/views/settings_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -51,6 +54,14 @@ class _MainViewState extends State<MainView> {
           onDestinationSelected: (int index){
             controller.page.value=Pages.values[index];
           },
+        ),
+        body: IndexedStack(
+          index: controller.page.value.index,
+          children: [
+            FilesView(),
+            ServerView(),
+            SettingsView(),
+          ],
         ),
       ),
     );
