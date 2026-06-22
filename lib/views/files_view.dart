@@ -71,6 +71,7 @@ class _FilesViewState extends State<FilesView> {
         ],
       ),
     ) : ListView.builder(
+      itemCount: files.length,
       itemBuilder: (BuildContext context, int index) => ListTile(
         title: Text(p.basename(files[index].path)),
         subtitle: Text(files[index].path),
