@@ -21,15 +21,29 @@ class _ServerViewState extends State<ServerView> {
   String address="";
 
   Future<void> getAddress() async {
-    final interfaces = await NetworkInterface.list();
+    final interfaces = await NetworkInterface.list(
+      type: InternetAddressType.IPv4,
+      includeLinkLocal: false,
+    );
+    
+    const wifiNames = {'en0', 'wlan0'};
+    
     for (final interface in interfaces) {
-      final addresses = interface.addresses;
-      final localAddresses = addresses.where((address) => !address.isLoopback && address.type.name=="IPv4");
-      for (final localAddress in localAddresses) {
-        setState(() {
-          address=localAddress.address;
-        });
-        return;
+      if (!wifiNames.contains(interface.name)) continue;
+      for (final address in interface.addresses) {
+        if (!address.isLoopback) {
+          setState(() => this.address = address.address);
+          return;
+        }
+      }
+    }
+    
+    for (final interface in interfaces) {
+      for (final address in interface.addresses) {
+        if (!address.isLoopback) {
+          setState(() => this.address = address.address);
+          return;
+        }
       }
     }
   }
