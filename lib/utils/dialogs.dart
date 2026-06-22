@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-Future<void> showOkDialog(BuildContext context, String title, String content, {okText="ok"}) async {
+Future<void> showOkDialog(BuildContext context, String title, String content, {String okText="ok"}) async {
   await showDialog(
     context: context,
     builder: (BuildContext context) {
