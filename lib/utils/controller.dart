@@ -30,8 +30,9 @@ class Controller extends GetxController {
 
   late SharedPreferences prefs;
 
-  Rx<Pages> page=Rx(Pages.files);
+  Rx<Pages> page=Rx(Pages.server);
   RxString filesDir="".obs;
+  RxBool running=false.obs;
 
   void initLanguage(){
     int? langIndex=prefs.getInt("langIndex");
