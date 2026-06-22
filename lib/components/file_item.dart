@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:local_sink/components/sheet_item.dart';
 import 'package:local_sink/utils/dialogs.dart';
 import 'package:local_sink/utils/types.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
 
@@ -112,11 +113,11 @@ class _FileItemState extends State<FileItem> {
       subtitle: Text(widget.file.isDir ? "dir".tr : formatFileSize(widget.file.size)),
       leading: widget.file.isDir ? FaIcon(FontAwesomeIcons.folder) : FaIcon(FontAwesomeIcons.file),
       onLongPress: () => handleClick(context),
-      onTap: (){
+      onTap: () async {
         if(widget.file.isDir){
           widget.onChanged(widget.file.path);
         }else{
-          handleClick(context);
+          await OpenFile.open(widget.file.path);
         }
       },
     );
