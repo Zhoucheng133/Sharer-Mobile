@@ -16,11 +16,18 @@ List<LanguageType> get supportedLocales => [
   LanguageType("繁體中文", const Locale("zh", "TW")),
 ];
 
+enum Pages{
+  files,
+  server,
+  settings,
+}
 
 class Controller extends GetxController {
   Rx<LanguageType> lang=Rx(supportedLocales[0]);
 
   late SharedPreferences prefs;
+
+  Rx<Pages> page=Rx(Pages.files);
 
   Future<void> init() async {
     prefs=await SharedPreferences.getInstance();

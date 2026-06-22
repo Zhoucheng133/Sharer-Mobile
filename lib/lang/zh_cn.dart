@@ -1,4 +1,5 @@
 const Map<String, String> zhCN = {
-  'home': '主页',
-  'settings': '设置'
+  "files": "文件",
+  'settings': '设置',
+  "server": "服务器",
 };
