@@ -9,17 +9,15 @@ environment:
 dependencies:
   clipboard: ^3.0.14
   ffi: ^2.2.0
-  file_picker: ^3.0.4
+  file_picker: ^11.0.2
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   font_awesome_flutter: ^11.0.0
   get: ^4.7.3
-  package_info_plus: ^10.1.0
   path: ^1.9.1
   path_provider: ^2.1.6
-  share_plus: ^13.1.0
   shared_preferences: ^2.5.5
   url_launcher: ^6.3.2
 
