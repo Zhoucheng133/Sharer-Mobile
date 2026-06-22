@@ -30,9 +30,10 @@ class Controller extends GetxController {
 
   late SharedPreferences prefs;
 
-  Rx<Pages> page=Rx(Pages.server);
+  Rx<Pages> page=Rx(Pages.files);
   RxString filesDir="".obs;
   RxBool running=false.obs;
+  RxString nowDir="".obs;
 
   void initLanguage(){
     int? langIndex=prefs.getInt("langIndex");
@@ -58,6 +59,7 @@ class Controller extends GetxController {
       await dir.create(recursive: true); 
     }
     filesDir.value = targetPath;
+    nowDir.value=targetPath;
   }
 
   Future<void> init() async {

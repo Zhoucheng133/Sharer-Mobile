@@ -3,32 +3,45 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:local_sink/components/file_item.dart';
 import 'package:local_sink/utils/controller.dart';
 import 'package:local_sink/utils/types.dart';
-import 'package:path/path.dart' as p;
 
 class FilesView extends StatefulWidget {
   const FilesView({super.key});
 
   @override
-  State<FilesView> createState() => _FilesViewState();
+  State<FilesView> createState() => FilesViewState();
 }
 
-class _FilesViewState extends State<FilesView> {
+class FilesViewState extends State<FilesView> {
 
   bool loading=true;
-  List<FileItem> files=[];
+  List<FileType> files=[];
   final Controller controller = Get.find();
 
-  void getFiles() async {
-    final dir = Directory(controller.filesDir.value);
+  Future<void> getFiles() async {
+    setState(() {
+      loading=true;
+    });
+    final dir = Directory(controller.nowDir.value);
     if(await dir.exists()){
+
+      List<FileType> tmpList=[];
+
       Stream<FileSystemEntity> fileList = dir.list(recursive: false);
       await for (FileSystemEntity entity in fileList) {
-        final filePath=entity.path;
-        files.add(FileItem(filePath, entity is Directory));
+        final filePath = entity.path;
+        final int size;
+        if (entity is Directory) {
+          size = 0;
+        } else {
+          final stat = await entity.stat();
+          size = stat.size;
+        }
+        tmpList.add(FileType(filePath, entity is Directory, size));
       }
-      files.sort((a, b) {
+      tmpList.sort((a, b) {
         if (a.isDir && !b.isDir) {
           return -1; 
         }
@@ -36,6 +49,9 @@ class _FilesViewState extends State<FilesView> {
           return 1;
         }
         return a.path.toLowerCase().compareTo(b.path.toLowerCase());
+      });
+      setState(() {
+        files=tmpList;
       });
     }
     setState(() {
@@ -46,6 +62,11 @@ class _FilesViewState extends State<FilesView> {
   @override
   void initState() {
     super.initState();
+    getFiles();
+  }
+
+  void onChanged(String path){
+    controller.nowDir.value=path;
     getFiles();
   }
 
@@ -62,7 +83,7 @@ class _FilesViewState extends State<FilesView> {
             ),
           ),
           IconButton(
-            onPressed: (){}, 
+            onPressed: getFiles, 
             icon: FaIcon(
               FontAwesomeIcons.arrowRotateRight,
               size: 18,
@@ -70,12 +91,12 @@ class _FilesViewState extends State<FilesView> {
           )
         ],
       ),
-    ) : ListView.builder(
-      itemCount: files.length,
-      itemBuilder: (BuildContext context, int index) => ListTile(
-        title: Text(p.basename(files[index].path)),
-        subtitle: Text(files[index].path),
-      )
+    ) : RefreshIndicator(
+      onRefresh: () => getFiles(),
+      child: ListView.builder(
+        itemCount: files.length,
+        itemBuilder: (BuildContext context, int index) => FileItem(file: files[index], refresh: getFiles, onChanged: (value)=>onChanged(value),)
+      ),
     );
   }
 }

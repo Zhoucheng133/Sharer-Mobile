@@ -7,4 +7,10 @@ const Map<String, String> zhCN = {
   "copySuccess": "复制成功",
   "copySharedLinkSuccess": "已复制链接地址",
   "ok": "好的",
+  "dir": "目录",
+  "share": "分享",
+  "delete": "删除",
+  "cancel": "取消",
+  "rename": "重命名",
+  "newName": "新名称",
 };

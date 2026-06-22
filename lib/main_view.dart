@@ -5,6 +5,7 @@ import 'package:local_sink/utils/controller.dart';
 import 'package:local_sink/views/files_view.dart';
 import 'package:local_sink/views/server_view.dart';
 import 'package:local_sink/views/settings_view.dart';
+import 'package:path/path.dart' as p;
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -16,6 +17,22 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
 
   final Controller controller=Get.find();
+  final fileViewKey = GlobalKey<FilesViewState>();
+
+  Widget? appBarLeading(){
+    if(controller.page.value!=Pages.files) return null;
+    if(controller.nowDir.value==controller.filesDir.value) return null;
+    return IconButton(
+      icon: FaIcon(
+        FontAwesomeIcons.arrowLeft,
+        size: 18,
+      ),
+      onPressed: (){
+        controller.nowDir.value=p.dirname(controller.nowDir.value);
+        fileViewKey.currentState?.getFiles();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +42,7 @@ class _MainViewState extends State<MainView> {
         appBar: AppBar(
           title: Text(controller.page.value.name.tr),
           scrolledUnderElevation: 0.0,
+          leading: appBarLeading(),
         ),
         bottomNavigationBar: NavigationBar(
           destinations: [
@@ -58,7 +76,7 @@ class _MainViewState extends State<MainView> {
         body: IndexedStack(
           index: controller.page.value.index,
           children: [
-            FilesView(),
+            FilesView(key: fileViewKey,),
             ServerView(),
             SettingsView(),
           ],
