@@ -40,6 +40,7 @@ class _MainAppState extends State<MainApp> {
         debugShowCheckedModeBanner: false,
         locale: controller.lang.value.locale, 
         supportedLocales: supportedLocales.map((item)=>item.locale).toList(),
+        fallbackLocale: supportedLocales.first.locale,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
