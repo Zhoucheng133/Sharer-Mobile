@@ -118,6 +118,7 @@ class _MainViewState extends State<MainView> {
           title: Text(controller.page.value.name.tr),
           scrolledUnderElevation: 0.0,
           leading: appBarLeading(),
+          backgroundColor: Theme.of(context).colorScheme.surface,
         ),
         bottomNavigationBar: NavigationBar(
           destinations: [
