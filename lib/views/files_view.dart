@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:local_sink/components/breadcrumb_bar.dart';
 import 'package:local_sink/components/file_item.dart';
 import 'package:local_sink/utils/controller.dart';
 import 'package:local_sink/utils/types.dart';
@@ -72,31 +73,48 @@ class FilesViewState extends State<FilesView> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Center(child: CircularProgressIndicator()) : files.isEmpty ? Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "noFiles".tr,
-            style: TextStyle(
-              fontSize: 18,
+    return loading ? Center(child: CircularProgressIndicator()) : CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: BreadcrumbBar(
+            rootDir: controller.filesDir.value,
+            currentPath: controller.nowDir.value, 
+            refresh: () => getFiles(),
+          ),
+        ),
+        SliverFillRemaining(
+          child: files.isEmpty ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "noFiles".tr,
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                IconButton(
+                  onPressed: getFiles, 
+                  icon: FaIcon(
+                    FontAwesomeIcons.arrowRotateRight,
+                    size: 18,
+                  )
+                )
+              ],
+            ),
+          ) : RefreshIndicator(
+            onRefresh: () => getFiles(),
+            child: ListView.builder(
+              itemCount: files.length,
+              itemBuilder: (context, index) => FileItem(
+                file: files[index],
+                refresh: getFiles,
+                onChanged: (value) => onChanged(value),
+              ),
             ),
           ),
-          IconButton(
-            onPressed: getFiles, 
-            icon: FaIcon(
-              FontAwesomeIcons.arrowRotateRight,
-              size: 18,
-            )
-          )
-        ],
-      ),
-    ) : RefreshIndicator(
-      onRefresh: () => getFiles(),
-      child: ListView.builder(
-        itemCount: files.length,
-        itemBuilder: (BuildContext context, int index) => FileItem(file: files[index], refresh: getFiles, onChanged: (value)=>onChanged(value),)
-      ),
+        ),
+      ],
     );
   }
 }
