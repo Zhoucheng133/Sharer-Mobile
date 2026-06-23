@@ -90,8 +90,8 @@ class _FileItemState extends State<FileItem> {
     }
   }
 
-  void handleClick(BuildContext context) async {
-    showModalBottomSheet(
+  Future<void> options(BuildContext context) async {
+    await showModalBottomSheet(
       context: context,
       clipBehavior: Clip.antiAlias,
       builder: (BuildContext context) => Column(
@@ -112,7 +112,7 @@ class _FileItemState extends State<FileItem> {
       title: Text(p.basename(widget.file.path)),
       subtitle: Text(widget.file.isDir ? "dir".tr : formatFileSize(widget.file.size)),
       leading: widget.file.isDir ? FaIcon(FontAwesomeIcons.folder) : FaIcon(FontAwesomeIcons.file),
-      onLongPress: () => handleClick(context),
+      onLongPress: () => options(context),
       onTap: () async {
         if(widget.file.isDir){
           widget.onChanged(widget.file.path);

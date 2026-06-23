@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:local_sink/components/sheet_item.dart';
 import 'package:local_sink/utils/controller.dart';
 import 'package:local_sink/utils/dialogs.dart';
 import 'package:local_sink/views/files_view.dart';
@@ -38,7 +39,7 @@ class _MainViewState extends State<MainView> {
     );
   }
 
-  Future<void> uploadFile(BuildContext context) async {
+  Future<void> addFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.pickFiles(allowMultiple: true);
     if (result == null) return;
 
@@ -59,6 +60,42 @@ class _MainViewState extends State<MainView> {
     }
 
     fileViewKey.currentState?.getFiles();
+  }
+
+  Future<void> addImage(BuildContext context) async {
+
+  }
+
+  Future<void> addDir(BuildContext context) async {
+    final dirName = await showInputDialog(context, title: 'mkdir'.tr, hint: '', initialValue: '', okText: "create");
+
+    if (dirName == null || dirName.trim().isEmpty) return;
+    final newDir = Directory(p.join(controller.nowDir.value, dirName.trim()));
+     if (await newDir.exists()) {
+      if (context.mounted) {
+        await showOkDialog(context, "error".tr, "dirExists".tr);
+      }
+      return;
+    }
+
+    await newDir.create(recursive: true);
+    fileViewKey.currentState?.getFiles();
+  }
+
+  Future<void> addHandler(BuildContext conntext) async {
+    await showModalBottomSheet(
+      context: context,
+      clipBehavior: Clip.antiAlias,
+      builder: (BuildContext context) => Column(
+        mainAxisSize: .min,
+        children: [
+          SheetItem(label: "fromFile".tr, iconData: FontAwesomeIcons.file, callback: ()=>addFile(context)),
+          SheetItem(label: "fromGallery".tr, iconData: FontAwesomeIcons.image, callback: ()=>addImage(context)),
+          SheetItem(label: "mkdir".tr, iconData: FontAwesomeIcons.folder, callback: ()=>addDir(context)),
+          SizedBox(height: MediaQuery.of(context).padding.bottom,),
+        ],
+      )
+    );
   }
 
   @override
@@ -105,7 +142,7 @@ class _MainViewState extends State<MainView> {
             FontAwesomeIcons.plus,
             size: 18,
           ),
-          onPressed: ()=>uploadFile(context)
+          onPressed: ()=>addHandler(context)
         ) : null,
         body: IndexedStack(
           index: controller.page.value.index,

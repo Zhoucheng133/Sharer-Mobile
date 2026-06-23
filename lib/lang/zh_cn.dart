@@ -13,4 +13,10 @@ const Map<String, String> zhCN = {
   "cancel": "取消",
   "rename": "重命名",
   "newName": "新名称",
+  "fromFile": "来自文件",
+  "fromGallery": "来自相册",
+  "mkdir": "新建目录",
+  "create": "创建",
+  "error": "错误",
+  "dirExists": "目录已存在",
 };
