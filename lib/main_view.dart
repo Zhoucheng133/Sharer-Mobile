@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:local_sink/components/sheet_item.dart';
-import 'package:local_sink/utils/controller.dart';
-import 'package:local_sink/utils/dialogs.dart';
-import 'package:local_sink/views/files_view.dart';
-import 'package:local_sink/views/server_view.dart';
-import 'package:local_sink/views/settings_view.dart';
 import 'package:path/path.dart' as p;
+import 'package:sharer_mobile/components/sheet_item.dart';
+import 'package:sharer_mobile/utils/controller.dart';
+import 'package:sharer_mobile/utils/dialogs.dart';
+import 'package:sharer_mobile/views/files_view.dart';
+import 'package:sharer_mobile/views/server_view.dart';
+import 'package:sharer_mobile/views/settings_view.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});

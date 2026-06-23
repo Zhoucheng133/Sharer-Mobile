@@ -4,9 +4,9 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:local_sink/utils/controller.dart';
-import 'package:local_sink/utils/dialogs.dart';
-import 'package:local_sink/utils/server.dart';
+import 'package:sharer_mobile/utils/controller.dart';
+import 'package:sharer_mobile/utils/dialogs.dart';
+import 'package:sharer_mobile/utils/server.dart';
 
 class ServerView extends StatefulWidget {
   const ServerView({super.key});

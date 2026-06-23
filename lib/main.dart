@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:local_sink/lang/zh_cn.dart';
-import 'package:local_sink/main_view.dart';
-import 'package:local_sink/utils/controller.dart';
+import 'package:sharer_mobile/lang/zh_cn.dart';
+import 'package:sharer_mobile/main_view.dart';
+import 'package:sharer_mobile/utils/controller.dart';
 
 Future<void> main() async {
   final controller=Get.put(Controller());

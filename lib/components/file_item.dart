@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:local_sink/components/sheet_item.dart';
-import 'package:local_sink/utils/dialogs.dart';
-import 'package:local_sink/utils/types.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
+import 'package:sharer_mobile/components/sheet_item.dart';
+import 'package:sharer_mobile/utils/dialogs.dart';
+import 'package:sharer_mobile/utils/types.dart';
 
 class FileItem extends StatefulWidget {
 

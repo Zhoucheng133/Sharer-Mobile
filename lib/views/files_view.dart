@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:local_sink/components/breadcrumb_bar.dart';
-import 'package:local_sink/components/file_item.dart';
-import 'package:local_sink/utils/controller.dart';
-import 'package:local_sink/utils/types.dart';
+import 'package:sharer_mobile/components/breadcrumb_bar.dart';
+import 'package:sharer_mobile/components/file_item.dart';
+import 'package:sharer_mobile/utils/controller.dart';
+import 'package:sharer_mobile/utils/types.dart';
 
 class FilesView extends StatefulWidget {
   const FilesView({super.key});

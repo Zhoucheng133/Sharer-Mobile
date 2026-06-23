@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:local_sink/utils/controller.dart';
+import 'package:sharer_mobile/utils/controller.dart';
 
 class BreadcrumbBar extends StatefulWidget {
   final String rootDir;
