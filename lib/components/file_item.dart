@@ -109,7 +109,11 @@ class _FileItemState extends State<FileItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(p.basename(widget.file.path)),
+      title: Text(
+        p.basename(widget.file.path),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
       subtitle: Text(widget.file.isDir ? "dir".tr : formatFileSize(widget.file.size)),
       leading: widget.file.isDir ? FaIcon(FontAwesomeIcons.folder) : FaIcon(FontAwesomeIcons.file),
       onLongPress: () => options(context),
