@@ -95,24 +95,25 @@ class _ServerViewState extends State<ServerView> {
           ),
           const SizedBox(height: 20,),
           Obx(
-            () => Switch(
-              value: controller.running.value, 
-              thumbIcon: WidgetStateProperty.resolveWith<Icon?>((Set<WidgetState> states) {
-                if (states.contains(WidgetState.selected)) {
-                  // 开启状态下的图标
-                  return const Icon(Icons.check);
+            () => Transform.scale(
+              scale: 1.2,
+              child: Switch(
+                value: controller.running.value, 
+                thumbIcon: WidgetStateProperty.resolveWith<Icon?>((Set<WidgetState> states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return const Icon(Icons.check);
+                  }
+                  return const Icon(Icons.close);
+                }),
+                onChanged: (val){
+                  controller.running.value=val;
+                  if(val){
+                    server.run("", "", "8080", controller.filesDir.value);
+                  }else{
+                    server.stop();
+                  }
                 }
-                // 关闭状态下的图标（如果不想显示图标，可以返回 null）
-                return const Icon(Icons.close);
-              }),
-              onChanged: (val){
-                controller.running.value=val;
-                if(val){
-                  server.run("", "", "8080", controller.filesDir.value);
-                }else{
-                  server.stop();
-                }
-              }
+              ),
             ),
           )
         ],
