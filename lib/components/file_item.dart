@@ -116,6 +116,10 @@ class _FileItemState extends State<FileItem> {
       ),
       subtitle: Text(widget.file.isDir ? "dir".tr : formatFileSize(widget.file.size)),
       leading: widget.file.isDir ? FaIcon(FontAwesomeIcons.folder) : FaIcon(FontAwesomeIcons.file),
+      trailing: IconButton(
+        icon: const Icon(Icons.more_vert),
+        onPressed: () => options(context),
+      ),
       onLongPress: () => options(context),
       onTap: () async {
         if(widget.file.isDir){
