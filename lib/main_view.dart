@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:local_sink/components/sheet_item.dart';
 import 'package:local_sink/utils/controller.dart';
 import 'package:local_sink/utils/dialogs.dart';
@@ -63,7 +64,17 @@ class _MainViewState extends State<MainView> {
   }
 
   Future<void> addImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final List<XFile> images = await picker.pickMultiImage();
 
+    if (images.isEmpty) return;
+
+    for (final image in images) {
+      final fileName = image.name;
+      final destPath = p.join(controller.nowDir.value, fileName);
+      await File(image.path).copy(destPath);
+    }
+    fileViewKey.currentState?.getFiles();
   }
 
   Future<void> addDir(BuildContext context) async {
