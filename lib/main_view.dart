@@ -6,9 +6,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharer_mobile/components/sheet_item.dart';
 import 'package:sharer_mobile/utils/controller.dart';
 import 'package:sharer_mobile/utils/dialogs.dart';
+import 'package:sharer_mobile/utils/server.dart';
 import 'package:sharer_mobile/views/files_view.dart';
 import 'package:sharer_mobile/views/server_view.dart';
 import 'package:sharer_mobile/views/settings_view.dart';
@@ -107,6 +109,20 @@ class _MainViewState extends State<MainView> {
         ],
       )
     );
+  }
+
+  void permissionHandler() async {
+    if(!controller.initNetwork.value){
+      await ping("https://example.org");
+      final prefs=await SharedPreferences.getInstance();
+      prefs.setBool("initNetwork", true);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    permissionHandler();
   }
 
   @override

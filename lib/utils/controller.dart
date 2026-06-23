@@ -35,6 +35,8 @@ class Controller extends GetxController {
   RxBool running=false.obs;
   RxString nowDir="".obs;
 
+  RxBool initNetwork=false.obs;
+
   void initLanguage(){
     int? langIndex=prefs.getInt("langIndex");
 
@@ -62,10 +64,15 @@ class Controller extends GetxController {
     nowDir.value=targetPath;
   }
 
+  void initPrefs(){
+    initNetwork.value=prefs.getBool("initNetwork")??false;
+  }
+
   Future<void> init() async {
     prefs=await SharedPreferences.getInstance();
 
     initLanguage();
+    initPrefs();
     await initFiles();
   }
 

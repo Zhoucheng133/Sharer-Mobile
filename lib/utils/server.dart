@@ -1,14 +1,38 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 import 'dart:isolate';
 import "package:ffi/ffi.dart";
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 typedef StartServer = void Function(Pointer<Utf8> port, Pointer<Utf8> basePath, Pointer<Utf8> username, Pointer<Utf8> password);
 typedef StartServerFunc = Void Function(Pointer<Utf8> port, Pointer<Utf8> basePath, Pointer<Utf8> username, Pointer<Utf8> password);
 
 typedef StopServer=void Function();
 typedef StopServerFunc=Void Function();
+
+Future<Map<String, dynamic>> ping(String url, {int timeoutInSeconds = 5}) async {
+  try {
+    final response = await http.get(Uri.parse(url)).timeout(Duration(seconds: timeoutInSeconds));
+
+    if (response.statusCode == 200) {
+      String responseBody = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> data = json.decode(responseBody);
+      return data;
+    } else {
+      Map<String, dynamic> data = {};
+      throw Exception(data);
+    }
+  } on TimeoutException {
+    Map<String, dynamic> data = {};
+    return data;
+  } catch (error) {
+    Map<String, dynamic> data = {};
+    return data;
+  }
+}
 
 class Server {
   Isolate? isolate;
