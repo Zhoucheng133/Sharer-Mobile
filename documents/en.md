@@ -19,14 +19,12 @@ Frontend page: [Sharer-Web](https://github.com/Zhoucheng133/Sharer-Web)
 
 ### App
 
-<img src="../screenshots/en/1.png" width="200px" />
-<img src="../screenshots/en/2.png" width="200px" />
-<img src="../screenshots/en/3.png" width="200px" />
+<img src="../screenshots/en/1.png" width="600px" />
 
 ### Page
 
-<img src="../screenshots/en/4.png"/>
-<img src="../screenshots/en/5.png" />
+<img src="../screenshots/en/2.png"/>
+<img src="../screenshots/en/3.png" />
 
 ## Build on Your Device
 

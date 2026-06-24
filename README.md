@@ -21,14 +21,12 @@ Also available in English. Click [HERE](/documents/en.md) to view the English ve
 
 ### App
 
-<img src="screenshots/cn/1.png" width="200px" />
-<img src="screenshots/cn/2.png" width="200px" />
-<img src="screenshots/cn/3.png" width="200px" />
+<img src="screenshots/cn/1.png" width="600px" />
 
 ### 页面
 
-<img src="screenshots/cn/4.png"/>
-<img src="screenshots/cn/5.png" />
+<img src="screenshots/cn/2.png"/>
+<img src="screenshots/cn/3.png" />
 
 ## 在你的设备上构建
 
