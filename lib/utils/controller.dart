@@ -30,7 +30,7 @@ class Controller extends GetxController {
 
   late SharedPreferences prefs;
 
-  Rx<Pages> page=Rx(Pages.files);
+  Rx<Pages> page=Rx(Pages.settings);
   RxString filesDir="".obs;
   RxBool running=false.obs;
   RxString nowDir="".obs;
@@ -64,8 +64,17 @@ class Controller extends GetxController {
     nowDir.value=targetPath;
   }
 
+  RxString port=RxString("8080");
+  RxBool useAuth=RxBool(false);
+  RxString username=RxString("");
+  RxString password=RxString("");
+
   void initPrefs(){
     initNetwork.value=prefs.getBool("initNetwork")??false;
+    port.value=prefs.getString("port")??"8080";
+    useAuth.value=prefs.getBool("useAuth")??false;
+    username.value=prefs.getString("username")??"";
+    password.value=prefs.getString("password")??"";
   }
 
   Future<void> init() async {

@@ -81,13 +81,13 @@ class _ServerViewState extends State<ServerView> {
           const SizedBox(height: 10,),
           GestureDetector(
             onTap: () async {
-              await FlutterClipboard.copy("$address:8080");
+              await FlutterClipboard.copy("$address:${controller.port.value}");
               if(context.mounted){
                 showOkDialog(context, "copySuccess".tr, "copySharedLinkSuccess".tr);
               }
             },
             child: Text(
-              "$address:8080",
+              "$address:${controller.port.value}",
               style: TextStyle(
                 fontSize: 15
               ),
@@ -108,7 +108,7 @@ class _ServerViewState extends State<ServerView> {
                 onChanged: (val){
                   controller.running.value=val;
                   if(val){
-                    server.run("", "", "8080", controller.filesDir.value);
+                    server.run( controller.useAuth.value ? controller.username.value : "", controller.useAuth.value ? controller.password.value : "", controller.port.value, controller.filesDir.value);
                   }else{
                     server.stop();
                   }

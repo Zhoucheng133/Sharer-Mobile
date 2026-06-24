@@ -19,4 +19,12 @@ const Map<String, String> zhCN = {
   "create": "创建",
   "error": "错误",
   "dirExists": "目录已存在",
+  "port": "端口",
+  "port_range": "端口不合法\n端口范围：1024-65535",
+  "auth": "认证",
+  "useAuth": "使用认证",
+  "username": "用户名",
+  "password": "密码",
+  "noAuth": "无认证",
+  "language": "语言",
 };
