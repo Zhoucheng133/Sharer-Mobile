@@ -15,6 +15,9 @@ This is the mobile version of [Sharer App](https://github.com/Zhoucheng133/Share
 Core component: [Sharer-Core](https://github.com/Zhoucheng133/Sharer-Core)  
 Frontend page: [Sharer-Web](https://github.com/Zhoucheng133/Sharer-Web)
 
+> [!NOTE]
+> This app does NOT require an internet connection, but on some devices, authorization to use Wi-Fi is required to start the server.
+
 ## Screenshots
 
 ### App

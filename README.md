@@ -17,6 +17,9 @@ Also available in English. Click [HERE](/documents/en.md) to view the English ve
 核心组件在这里：[Sharer-Core](https://github.com/Zhoucheng133/Sharer-Core)  
 前端页面在这里：[Sharer-Web](https://github.com/Zhoucheng133/Sharer-Web)
 
+> [!NOTE]
+> 本App不需要连接互联网，但是在一些设备上需要授权使用无线局域网才能启动服务器
+
 ## 截图
 
 ### App
