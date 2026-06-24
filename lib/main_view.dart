@@ -128,57 +128,73 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text(controller.page.value.name.tr),
-          scrolledUnderElevation: 0.0,
-          leading: appBarLeading(),
-          backgroundColor: Theme.of(context).colorScheme.surface,
-        ),
-        bottomNavigationBar: NavigationBar(
-          destinations: [
-            NavigationDestination(
-              icon: FaIcon(
-                FontAwesomeIcons.file,
-                size: 18,
-              ),
-              label: 'files'.tr,
-            ),
-            NavigationDestination(
-              icon: FaIcon(
-                FontAwesomeIcons.server,
-                size: 18,
-              ),
-              label: 'server'.tr,
-            ),
-            NavigationDestination(
-              icon: FaIcon(
-                FontAwesomeIcons.gear,
-                size: 18,
-              ),
-              label: 'settings'.tr,
-            ),
-          ],
-          selectedIndex: controller.page.value.index,
-          onDestinationSelected: (int index){
-            controller.page.value=Pages.values[index];
-          },
-        ),
-        floatingActionButton: controller.page.value==Pages.files ? FloatingActionButton(
-          child: FaIcon(
-            FontAwesomeIcons.plus,
-            size: 18,
+      () => PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+          if (controller.page.value != Pages.files) {
+            Navigator.of(context).pop();
+            return;
+          }
+          if (controller.nowDir.value == controller.filesDir.value) {
+            Navigator.of(context).pop();
+            return;
+          }
+          controller.nowDir.value=p.dirname(controller.nowDir.value);
+          fileViewKey.currentState?.getFiles();
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: Text(controller.page.value.name.tr),
+            scrolledUnderElevation: 0.0,
+            leading: appBarLeading(),
+            backgroundColor: Theme.of(context).colorScheme.surface,
           ),
-          onPressed: ()=>addHandler(context)
-        ) : null,
-        body: IndexedStack(
-          index: controller.page.value.index,
-          children: [
-            FilesView(key: fileViewKey,),
-            ServerView(),
-            SettingsView(),
-          ],
+          bottomNavigationBar: NavigationBar(
+            destinations: [
+              NavigationDestination(
+                icon: FaIcon(
+                  FontAwesomeIcons.file,
+                  size: 18,
+                ),
+                label: 'files'.tr,
+              ),
+              NavigationDestination(
+                icon: FaIcon(
+                  FontAwesomeIcons.server,
+                  size: 18,
+                ),
+                label: 'server'.tr,
+              ),
+              NavigationDestination(
+                icon: FaIcon(
+                  FontAwesomeIcons.gear,
+                  size: 18,
+                ),
+                label: 'settings'.tr,
+              ),
+            ],
+            selectedIndex: controller.page.value.index,
+            onDestinationSelected: (int index){
+              controller.page.value=Pages.values[index];
+            },
+          ),
+          floatingActionButton: controller.page.value==Pages.files ? FloatingActionButton(
+            child: FaIcon(
+              FontAwesomeIcons.plus,
+              size: 18,
+            ),
+            onPressed: ()=>addHandler(context)
+          ) : null,
+          body: IndexedStack(
+            index: controller.page.value.index,
+            children: [
+              FilesView(key: fileViewKey,),
+              ServerView(),
+              SettingsView(),
+            ],
+          ),
         ),
       ),
     );
