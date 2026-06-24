@@ -73,17 +73,16 @@ class FilesViewState extends State<FilesView> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Center(child: CircularProgressIndicator()) : CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: BreadcrumbBar(
-            rootDir: controller.filesDir.value,
-            currentPath: controller.nowDir.value, 
-            refresh: () => getFiles(),
-          ),
+    return loading ? Center(child: CircularProgressIndicator()) : Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BreadcrumbBar(
+          rootDir: controller.filesDir.value,
+          currentPath: controller.nowDir.value, 
+          refresh: () => getFiles(),
         ),
-        SliverFillRemaining(
-          child: files.isEmpty ? Center(
+        Expanded(
+          child:  files.isEmpty ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -103,14 +102,23 @@ class FilesViewState extends State<FilesView> {
               ],
             ),
           ) : RefreshIndicator(
-            onRefresh: () => getFiles(),
-            child: ListView.builder(
-              itemCount: files.length,
-              itemBuilder: (context, index) => FileItem(
-                file: files[index],
-                refresh: getFiles,
-                onChanged: (value) => onChanged(value),
-              ),
+            onRefresh: getFiles,
+            child: CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => FileItem(
+                      file: files[index],
+                      refresh: getFiles,
+                      onChanged: (value) => onChanged(value),
+                    ),
+                    childCount: files.length,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(height: 50),
+                ),
+              ],
             ),
           ),
         ),
