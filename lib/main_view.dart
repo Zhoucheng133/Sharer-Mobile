@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -125,6 +126,14 @@ class _MainViewState extends State<MainView> {
     permissionHandler();
   }
 
+  void handleBack() {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop();
+    } else {
+      SystemNavigator.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -133,11 +142,11 @@ class _MainViewState extends State<MainView> {
         onPopInvokedWithResult: (didPop, result) {
           if (didPop) return;
           if (controller.page.value != Pages.files) {
-            Navigator.of(context).pop();
+            handleBack();
             return;
           }
           if (controller.nowDir.value == controller.filesDir.value) {
-            Navigator.of(context).pop();
+            handleBack();
             return;
           }
           controller.nowDir.value=p.dirname(controller.nowDir.value);
