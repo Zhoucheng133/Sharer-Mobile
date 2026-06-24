@@ -1,10 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sharer_mobile/components/settings_item.dart';
 import 'package:sharer_mobile/utils/controller.dart';
 import 'package:sharer_mobile/utils/dialogs.dart';
+import 'package:sharer_mobile/views/about_view.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -55,8 +57,14 @@ class _SettingsViewState extends State<SettingsView> {
     prefs.setString("password", authSetting.password);
   }
 
+  String verison="";
+
   Future<void> init() async {
     prefs=await SharedPreferences.getInstance();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      verison=packageInfo.version;
+    });
   }
 
   @override
@@ -81,6 +89,18 @@ class _SettingsViewState extends State<SettingsView> {
             onTap: ()=>changeAuth(context),
             subtitle: controller.useAuth.value ? controller.username.value : "noAuth".tr,
             iconData: FontAwesomeIcons.fingerprint,
+          ),
+          SettingsItem(
+            label: "language".tr, 
+            onTap: ()=>selectLanguage(context),
+            subtitle: controller.lang.value.name,
+            iconData: FontAwesomeIcons.language,
+          ),
+          SettingsItem(
+            label: "about".tr, 
+            onTap: ()=>Get.to(()=>AboutView(version: verison,)),
+            subtitle: "v$verison",
+            iconData: FontAwesomeIcons.circleInfo,
           )
         ],
       ),

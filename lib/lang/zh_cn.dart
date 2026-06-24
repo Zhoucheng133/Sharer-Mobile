@@ -27,4 +27,5 @@ const Map<String, String> zhCN = {
   "password": "密码",
   "noAuth": "无认证",
   "language": "语言",
+  "about": "关于",
 };

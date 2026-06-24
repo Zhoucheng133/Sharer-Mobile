@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sharer_mobile/utils/controller.dart';
 
 class AuthSetting{
   bool useAuth;
@@ -157,5 +158,43 @@ Future<AuthSetting?> showAuthDialog(BuildContext context, {
         )
       ],
     )
+  );
+}
+
+Future<void> selectLanguage(BuildContext context) async {
+
+  final c = Get.find<Controller>();
+
+  await showDialog(
+    context: context, 
+    builder: (context)=>AlertDialog(
+      title: Text('language'.tr),
+      content: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState)=> DropdownButtonHideUnderline(
+          child: DropdownButton(
+            focusColor: Colors.transparent,
+            borderRadius: BorderRadius.circular(10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            value: c.lang.value.name,
+            items: supportedLocales.map((item)=>DropdownMenuItem<String>(
+              value: item.name,
+              child: Text(item.name),
+            )).toList(),
+            onChanged: (val){
+              final index=supportedLocales.indexWhere((element) => element.name==val);
+              c.changeLanguage(index);
+            },
+          ),
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () async {
+            Navigator.pop(context);
+          }, 
+          child: Text('ok'.tr)
+        )
+      ],
+    ),
   );
 }
