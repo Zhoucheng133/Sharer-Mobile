@@ -30,7 +30,7 @@ class Controller extends GetxController {
 
   late SharedPreferences prefs;
 
-  Rx<Pages> page=Rx(Pages.settings);
+  Rx<Pages> page=Rx(Pages.files);
   RxString filesDir="".obs;
   RxBool running=false.obs;
   RxString nowDir="".obs;
