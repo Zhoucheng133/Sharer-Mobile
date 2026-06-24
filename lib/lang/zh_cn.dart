@@ -28,4 +28,6 @@ const Map<String, String> zhCN = {
   "noAuth": "无认证",
   "language": "语言",
   "about": "关于",
+  "projectURL": "项目地址",
+  "license": "许可证",
 };
