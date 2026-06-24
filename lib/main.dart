@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:sharer_mobile/lang/en_us.dart';
 import 'package:sharer_mobile/lang/zh_cn.dart';
+import 'package:sharer_mobile/lang/zh_tw.dart';
 import 'package:sharer_mobile/main_view.dart';
 import 'package:sharer_mobile/utils/controller.dart';
 
@@ -15,6 +17,8 @@ class MainTranslations extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
     'zh_CN': zhCN,
+    'zh_TW': zhTW,
+    'en_US': enUS,
   };
 }
 
