@@ -112,6 +112,65 @@ class _MainViewState extends State<MainView> {
     );
   }
 
+  Future<void> _copyDirectory(Directory source, Directory destination) async {
+    await destination.create(recursive: true);
+    await for (final entity in source.list()) {
+      final targetPath = p.join(destination.path, p.basename(entity.path));
+      if (entity is Directory) {
+        await _copyDirectory(entity, Directory(targetPath));
+      } else if (entity is File) {
+        await entity.copy(targetPath);
+      }
+    }
+  }
+
+  Future<void> pasteItems(BuildContext context) async {
+    final items = controller.copyMoveItem.value.items;
+    final type = controller.copyMoveItem.value.type;
+    if (type == null || items.isEmpty) return;
+
+    final targetDir = controller.nowDir.value;
+
+    if (type == CopyMoveType.copy && items.every((i) => p.dirname(i.path) == targetDir)) {
+      if (context.mounted) {
+        await showOkDialog(context, "error".tr, "sameLocation".tr);
+      }
+      return;
+    }
+
+    for (final item in items) {
+      final fileName = p.basename(item.path);
+      final targetPath = p.join(targetDir, fileName);
+
+      try {
+        if (type == CopyMoveType.copy) {
+          if (item.isDir) {
+            await _copyDirectory(Directory(item.path), Directory(targetPath));
+          } else {
+            await File(item.path).copy(targetPath);
+          }
+        } else {
+          if (p.dirname(item.path) == targetDir) continue;
+          if (item.isDir) {
+            await Directory(item.path).rename(targetPath);
+          } else {
+            await File(item.path).rename(targetPath);
+          }
+        }
+      } catch (e) {
+        if (context.mounted) {
+          await showOkDialog(context, "error".tr, e.toString());
+        }
+        return;
+      }
+    }
+
+    controller.copyMoveItem.value.type = null;
+    controller.copyMoveItem.value.items = [];
+    controller.copyMoveItem.refresh();
+    fileViewKey.currentState?.getFiles();
+  }
+
   void permissionHandler() async {
     if(!controller.initNetwork.value){
       await ping("https://example.org");
@@ -227,10 +286,7 @@ class _MainViewState extends State<MainView> {
               if(controller.copyMoveItem.value.type==null){
                 addHandler(context);
               }else{
-                // TODO 粘贴
-                controller.copyMoveItem.value.type=null;
-                controller.copyMoveItem.value.items=[];
-                controller.copyMoveItem.refresh();
+                pasteItems(context);
               }
             }
           ) : null,

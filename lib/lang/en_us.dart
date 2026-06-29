@@ -30,4 +30,8 @@ const Map<String, String> enUS = {
   "about": "About",
   "projectURL": "Project URL",
   "license": "License",
+
+  'copy': 'Copy',
+  'move': 'Move',
+  "sameLocation": "The source and destination are the same location",
 };

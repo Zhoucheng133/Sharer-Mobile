@@ -33,4 +33,5 @@ const Map<String, String> zhCN = {
 
   'copy': '复制',
   'move': '移动',
+  "sameLocation": "源位置和目标位置相同",
 };

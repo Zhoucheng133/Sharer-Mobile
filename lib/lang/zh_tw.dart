@@ -30,4 +30,8 @@ const Map<String, String> zhTW = {
   "about": "關於",
   "projectURL": "專案網址",
   "license": "授權條款",
+
+  'copy': '複製',
+  'move': '移動',
+  "sameLocation": "來源位置和目標位置相同",
 };
