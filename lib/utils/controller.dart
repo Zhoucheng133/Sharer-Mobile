@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharer_mobile/utils/types.dart';
 
 class LanguageType{
   String name;
@@ -25,6 +26,11 @@ enum Pages{
   settings,
 }
 
+class MultiSelect{
+  bool multiSelect=false;
+  List<FileType> selected=[];
+}
+
 class Controller extends GetxController {
   Rx<LanguageType> lang=Rx(supportedLocales[0]);
 
@@ -34,6 +40,8 @@ class Controller extends GetxController {
   RxString filesDir="".obs;
   RxBool running=false.obs;
   RxString nowDir="".obs;
+
+  Rx<MultiSelect> multiSelect=MultiSelect().obs;
 
   RxBool initNetwork=false.obs;
 

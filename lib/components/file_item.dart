@@ -7,6 +7,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
 import 'package:sharer_mobile/components/sheet_item.dart';
+import 'package:sharer_mobile/utils/controller.dart';
 import 'package:sharer_mobile/utils/dialogs.dart';
 import 'package:sharer_mobile/utils/types.dart';
 
@@ -99,6 +100,7 @@ class _FileItemState extends State<FileItem> {
         children: [
           SheetItem(label: "share".tr, iconData: FontAwesomeIcons.shareFromSquare, callback: share),
           SheetItem(label: "rename".tr, iconData: FontAwesomeIcons.penToSquare, callback: () => rename(context),),
+          // SheetItem(label: "copy".tr, iconData: FontAwesomeIcons.copy, callback: (){}),
           SheetItem(label: "delete".tr, iconData: FontAwesomeIcons.trash, callback: () => delete(context),),
           SizedBox(height: MediaQuery.of(context).padding.bottom,),
         ],
@@ -106,31 +108,52 @@ class _FileItemState extends State<FileItem> {
     );
   }
 
+  final Controller controller = Get.find();
+  
+  void multiSelector(){
+    controller.multiSelect.value.multiSelect=true;
+    controller.multiSelect.value.selected.add(widget.file);
+    controller.multiSelect.refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        p.basename(widget.file.path),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Text(widget.file.isDir ? "dir".tr : formatFileSize(widget.file.size)),
-      leading: widget.file.isDir ? FaIcon(FontAwesomeIcons.folder) : FaIcon(FontAwesomeIcons.file),
-      trailing: Transform.translate(
-        offset: Offset(10.0, 0),
-        child: IconButton(
-          icon: const Icon(Icons.more_vert),
-          onPressed: () => options(context),
+    return Obx(
+      () => ListTile(
+        title: Text(
+          p.basename(widget.file.path),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
+        subtitle: Text(widget.file.isDir ? "dir".tr : formatFileSize(widget.file.size)),
+        leading: controller.multiSelect.value.multiSelect ? Checkbox(
+          value: controller.multiSelect.value.selected.contains(widget.file), 
+          onChanged: (val){
+            controller.multiSelect.value.selected.contains(widget.file) ? controller.multiSelect.value.selected.remove(widget.file) : controller.multiSelect.value.selected.add(widget.file);
+            controller.multiSelect.refresh();
+          }
+        ) : widget.file.isDir ? FaIcon(FontAwesomeIcons.folder) : FaIcon(FontAwesomeIcons.file),
+        trailing: Transform.translate(
+          offset: Offset(10.0, 0),
+          child: IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () => options(context),
+          ),
+        ),
+        onLongPress: () => multiSelector(),
+        onTap: () async {
+          if(controller.multiSelect.value.multiSelect){
+            controller.multiSelect.value.selected.contains(widget.file) ? controller.multiSelect.value.selected.remove(widget.file) : controller.multiSelect.value.selected.add(widget.file);
+            controller.multiSelect.refresh();
+            return;
+          }
+          if(widget.file.isDir){
+            widget.onChanged(widget.file.path);
+          }else{
+            await OpenFile.open(widget.file.path);
+          }
+        },
       ),
-      onLongPress: () => options(context),
-      onTap: () async {
-        if(widget.file.isDir){
-          widget.onChanged(widget.file.path);
-        }else{
-          await OpenFile.open(widget.file.path);
-        }
-      },
     );
   }
 }

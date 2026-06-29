@@ -159,6 +159,33 @@ class _MainViewState extends State<MainView> {
             scrolledUnderElevation: 0.0,
             leading: appBarLeading(),
             backgroundColor: Theme.of(context).colorScheme.surface,
+            actions: controller.page.value==Pages.files && controller.multiSelect.value.multiSelect ? [
+              Padding(
+                padding: .only(right: 10),
+                child: PopupMenuButton(
+                  onSelected: (value) {
+                    switch (value) {
+                      case 0:
+                        controller.multiSelect.value.selected=[];
+                        controller.multiSelect.value.multiSelect=false;
+                        controller.multiSelect.refresh();
+                        break;
+                      // TODO 其它项
+                      default:
+                        break;
+                    }
+                  },
+                  icon: Icon(Icons.more_vert_rounded),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 0,
+                      child: Text('cancel'.tr),
+                    ),
+                    // TODO 其它项
+                  ]
+                ),
+              )
+            ] : null,
           ),
           bottomNavigationBar: NavigationBar(
             destinations: [
