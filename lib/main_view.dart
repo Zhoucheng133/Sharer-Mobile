@@ -217,11 +217,22 @@ class _MainViewState extends State<MainView> {
             },
           ),
           floatingActionButton: controller.page.value==Pages.files ? FloatingActionButton(
-            child: FaIcon(
+            child: controller.copyMoveItem.value.type==null ? FaIcon(
               FontAwesomeIcons.plus,
               size: 18,
+            ) : FaIcon(
+              FontAwesomeIcons.paste
             ),
-            onPressed: ()=>addHandler(context)
+            onPressed: (){
+              if(controller.copyMoveItem.value.type==null){
+                addHandler(context);
+              }else{
+                // TODO 粘贴
+                controller.copyMoveItem.value.type=null;
+                controller.copyMoveItem.value.items=[];
+                controller.copyMoveItem.refresh();
+              }
+            }
           ) : null,
           body: IndexedStack(
             index: controller.page.value.index,

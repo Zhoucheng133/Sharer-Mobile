@@ -26,9 +26,19 @@ enum Pages{
   settings,
 }
 
+enum CopyMoveType{
+  copy,
+  move,
+}
+
 class MultiSelect{
   bool multiSelect=false;
   List<FileType> selected=[];
+}
+
+class CopyMoveItem{
+  CopyMoveType? type;
+  List<FileType> items=[];
 }
 
 class Controller extends GetxController {
@@ -42,6 +52,7 @@ class Controller extends GetxController {
   RxString nowDir="".obs;
 
   Rx<MultiSelect> multiSelect=MultiSelect().obs;
+  Rx<CopyMoveItem> copyMoveItem=CopyMoveItem().obs;
 
   RxBool initNetwork=false.obs;
 

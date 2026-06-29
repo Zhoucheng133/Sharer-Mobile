@@ -32,4 +32,5 @@ const Map<String, String> zhCN = {
   "license": "许可证",
 
   'copy': '复制',
+  'move': '移动',
 };

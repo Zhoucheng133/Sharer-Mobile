@@ -91,6 +91,18 @@ class _FileItemState extends State<FileItem> {
     }
   }
 
+  void copy(){
+    controller.copyMoveItem.value.type=CopyMoveType.copy;
+    controller.copyMoveItem.value.items=[widget.file];
+    controller.copyMoveItem.refresh();
+  }
+
+  void move(){
+    controller.copyMoveItem.value.type=CopyMoveType.move;
+    controller.copyMoveItem.value.items=[widget.file];
+    controller.copyMoveItem.refresh();
+  }
+
   Future<void> options(BuildContext context) async {
     await showModalBottomSheet(
       context: context,
@@ -98,9 +110,10 @@ class _FileItemState extends State<FileItem> {
       builder: (BuildContext context) => Column(
         mainAxisSize: .min,
         children: [
-          SheetItem(label: "share".tr, iconData: FontAwesomeIcons.shareFromSquare, callback: share),
+          SheetItem(label: "share".tr, iconData: FontAwesomeIcons.arrowUpRightFromSquare, callback: share),
           SheetItem(label: "rename".tr, iconData: FontAwesomeIcons.penToSquare, callback: () => rename(context),),
-          // SheetItem(label: "copy".tr, iconData: FontAwesomeIcons.copy, callback: (){}),
+          SheetItem(label: "copy".tr, iconData: FontAwesomeIcons.copy, callback: copy),
+          SheetItem(label: "move".tr, iconData: FontAwesomeIcons.leftRight, callback: move),
           SheetItem(label: "delete".tr, iconData: FontAwesomeIcons.trash, callback: () => delete(context),),
           SizedBox(height: MediaQuery.of(context).padding.bottom,),
         ],
