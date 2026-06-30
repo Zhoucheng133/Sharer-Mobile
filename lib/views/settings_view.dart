@@ -21,6 +21,10 @@ class _SettingsViewState extends State<SettingsView> {
   late SharedPreferences prefs;
 
   Future<void> changePort(BuildContext context) async {
+    if(controller.running.value){
+      await showOkDialog(context, "cannotSet".tr, 'needCloseServer'.tr);
+      return;
+    }
     final String? port=await showInputDialog(
       context, 
       title: "port".tr, 
@@ -41,6 +45,10 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void changeAuth(BuildContext context) async {
+    if(controller.running.value){
+      await showOkDialog(context, "cannotSet".tr, 'needCloseServer'.tr);
+      return;
+    }
     AuthSetting? authSetting=await showAuthDialog(
       context, 
       username: controller.username.value, 

@@ -34,4 +34,6 @@ const Map<String, String> enUS = {
   'copy': 'Copy',
   'move': 'Move',
   "sameLocation": "The source and destination are the same location",
+  "needCloseServer": "Please close the server first",
+  'cannotSet': 'Cannot Set',
 };

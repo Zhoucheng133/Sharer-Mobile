@@ -34,4 +34,6 @@ const Map<String, String> zhTW = {
   'copy': '複製',
   'move': '移動',
   "sameLocation": "來源位置和目標位置相同",
+  'needCloseServer': '請先關閉伺服器',
+  'cannotSet': '無法設定',
 };

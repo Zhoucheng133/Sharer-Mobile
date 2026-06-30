@@ -34,4 +34,6 @@ const Map<String, String> zhCN = {
   'copy': '复制',
   'move': '移动',
   "sameLocation": "源位置和目标位置相同",
+  "needCloseServer": "请先关闭服务器",
+  "cannotSet": "无法设置",
 };
