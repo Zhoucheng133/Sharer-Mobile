@@ -226,6 +226,84 @@ class _MainViewState extends State<MainView> {
     }
   }
 
+  List<Widget>? appBarAction(BuildContext context){
+    if(controller.page.value!=Pages.files){
+      return null;
+    }
+    List<Widget> actions=[];
+    if(controller.copyMoveItem.value.type!=null){
+      actions.add(
+        TextButton(
+          child: Text("cancel".tr),
+          onPressed: (){
+            controller.copyMoveItem.value.type=null;
+            controller.copyMoveItem.value.items=[];
+            controller.copyMoveItem.refresh();
+          },
+        ),
+      );
+    }
+    if(controller.multiSelect.value.multiSelect){
+      actions.add(
+        PopupMenuButton(
+          onSelected: (value) {
+            switch (value) {
+              case 0:
+                controller.multiSelect.value.selected=[];
+                controller.multiSelect.value.multiSelect=false;
+                controller.multiSelect.refresh();
+                break;
+              case 1:
+                controller.copyMoveItem.value.type=CopyMoveType.copy;
+                controller.copyMoveItem.value.items=[...controller.multiSelect.value.selected];
+                controller.copyMoveItem.refresh();
+                controller.multiSelect.value.selected=[];
+                controller.multiSelect.value.multiSelect=false;
+                controller.multiSelect.refresh();
+                break;
+              case 2:
+                controller.copyMoveItem.value.type=CopyMoveType.move;
+                controller.copyMoveItem.value.items=[...controller.multiSelect.value.selected];
+                controller.copyMoveItem.refresh();
+                controller.multiSelect.value.selected=[];
+                controller.multiSelect.value.multiSelect=false;
+                controller.multiSelect.refresh();
+                break;
+              case 3:
+                deleteSelected(context);
+                break;
+              default:
+                break;
+            }
+          },
+          icon: Icon(Icons.more_vert_rounded),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 0,
+              child: Text('cancel'.tr),
+            ),
+            PopupMenuItem(
+              value: 1,
+              child: Text('copy'.tr),
+            ),
+            PopupMenuItem(
+              value: 2,
+              child: Text('move'.tr),
+            ),
+            PopupMenuItem(
+              value: 3,
+              child: Text('delete'.tr),
+            ),
+          ]
+        ),
+      );
+    }
+    actions.add(
+      SizedBox(width: 10,),
+    );
+    return actions;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -248,65 +326,11 @@ class _MainViewState extends State<MainView> {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(controller.page.value.name.tr),
+            centerTitle: true,
             scrolledUnderElevation: 0.0,
             leading: appBarLeading(),
             backgroundColor: Theme.of(context).colorScheme.surface,
-            actions: controller.page.value==Pages.files && controller.multiSelect.value.multiSelect ? [
-              Padding(
-                padding: .only(right: 10),
-                child: PopupMenuButton(
-                  onSelected: (value) {
-                    switch (value) {
-                      case 0:
-                        controller.multiSelect.value.selected=[];
-                        controller.multiSelect.value.multiSelect=false;
-                        controller.multiSelect.refresh();
-                        break;
-                      case 1:
-                        controller.copyMoveItem.value.type=CopyMoveType.copy;
-                        controller.copyMoveItem.value.items=[...controller.multiSelect.value.selected];
-                        controller.copyMoveItem.refresh();
-                        controller.multiSelect.value.selected=[];
-                        controller.multiSelect.value.multiSelect=false;
-                        controller.multiSelect.refresh();
-                        break;
-                      case 2:
-                        controller.copyMoveItem.value.type=CopyMoveType.move;
-                        controller.copyMoveItem.value.items=[...controller.multiSelect.value.selected];
-                        controller.copyMoveItem.refresh();
-                        controller.multiSelect.value.selected=[];
-                        controller.multiSelect.value.multiSelect=false;
-                        controller.multiSelect.refresh();
-                        break;
-                      case 3:
-                        deleteSelected(context);
-                        break;
-                      default:
-                        break;
-                    }
-                  },
-                  icon: Icon(Icons.more_vert_rounded),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 0,
-                      child: Text('cancel'.tr),
-                    ),
-                    PopupMenuItem(
-                      value: 1,
-                      child: Text('copy'.tr),
-                    ),
-                    PopupMenuItem(
-                      value: 2,
-                      child: Text('move'.tr),
-                    ),
-                    PopupMenuItem(
-                      value: 3,
-                      child: Text('delete'.tr),
-                    ),
-                  ]
-                ),
-              )
-            ] : null,
+            actions: appBarAction(context)
           ),
           bottomNavigationBar: NavigationBar(
             destinations: [
