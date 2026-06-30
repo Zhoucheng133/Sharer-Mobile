@@ -206,9 +206,11 @@ class _MainViewState extends State<MainView> {
 
   void permissionHandler() async {
     if(!controller.initNetwork.value){
-      await ping("https://example.org");
-      final prefs=await SharedPreferences.getInstance();
-      prefs.setBool("initNetwork", true);
+      try {
+        await ping("https://example.org");
+        final prefs=await SharedPreferences.getInstance();
+        prefs.setBool("initNetwork", true);
+      } catch (_) {}
     }
   }
 
