@@ -171,6 +171,39 @@ class _MainViewState extends State<MainView> {
     fileViewKey.currentState?.getFiles();
   }
 
+  Future<void> deleteSelected(BuildContext context) async {
+    final selected = controller.multiSelect.value.selected;
+    if (selected.isEmpty) return;
+
+    final names = selected.map((e) => p.basename(e.path)).join(', ');
+    final confirm = await showOkCancelDialog(
+      context, "delete".tr,
+      "${'delete'.tr}: $names",
+      okText: "delete".tr,
+    );
+    if (!confirm) return;
+
+    for (final item in selected) {
+      try {
+        if (item.isDir) {
+          await Directory(item.path).delete(recursive: true);
+        } else {
+          await File(item.path).delete();
+        }
+      } catch (e) {
+        if (context.mounted) {
+          await showOkDialog(context, "error".tr, e.toString());
+        }
+        return;
+      }
+    }
+
+    controller.multiSelect.value.selected=[];
+    controller.multiSelect.value.multiSelect=false;
+    controller.multiSelect.refresh();
+    fileViewKey.currentState?.getFiles();
+  }
+
   void permissionHandler() async {
     if(!controller.initNetwork.value){
       await ping("https://example.org");
@@ -229,7 +262,25 @@ class _MainViewState extends State<MainView> {
                         controller.multiSelect.value.multiSelect=false;
                         controller.multiSelect.refresh();
                         break;
-                      // TODO 其它项
+                      case 1:
+                        controller.copyMoveItem.value.type=CopyMoveType.copy;
+                        controller.copyMoveItem.value.items=[...controller.multiSelect.value.selected];
+                        controller.copyMoveItem.refresh();
+                        controller.multiSelect.value.selected=[];
+                        controller.multiSelect.value.multiSelect=false;
+                        controller.multiSelect.refresh();
+                        break;
+                      case 2:
+                        controller.copyMoveItem.value.type=CopyMoveType.move;
+                        controller.copyMoveItem.value.items=[...controller.multiSelect.value.selected];
+                        controller.copyMoveItem.refresh();
+                        controller.multiSelect.value.selected=[];
+                        controller.multiSelect.value.multiSelect=false;
+                        controller.multiSelect.refresh();
+                        break;
+                      case 3:
+                        deleteSelected(context);
+                        break;
                       default:
                         break;
                     }
@@ -240,7 +291,18 @@ class _MainViewState extends State<MainView> {
                       value: 0,
                       child: Text('cancel'.tr),
                     ),
-                    // TODO 其它项
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text('copy'.tr),
+                    ),
+                    PopupMenuItem(
+                      value: 2,
+                      child: Text('move'.tr),
+                    ),
+                    PopupMenuItem(
+                      value: 3,
+                      child: Text('delete'.tr),
+                    ),
                   ]
                 ),
               )
