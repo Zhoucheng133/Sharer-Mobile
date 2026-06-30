@@ -96,7 +96,7 @@ class _MainViewState extends State<MainView> {
     fileViewKey.currentState?.getFiles();
   }
 
-  Future<void> addHandler(BuildContext conntext) async {
+  Future<void> addHandler(BuildContext context) async {
     await showModalBottomSheet(
       context: context,
       clipBehavior: Clip.antiAlias,
