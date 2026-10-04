@@ -480,7 +480,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3B6PX4JP7X;
+				DEVELOPMENT_TEAM = F4V84LY292;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sharer;
@@ -493,7 +493,7 @@
 					"-force_load",
 					"$(PROJECT_DIR)/libserver.xcframework/ios-arm64/libserver-device.a",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = zhouc.sharerMobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jingyili.sharer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = "non-global";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -677,7 +677,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3B6PX4JP7X;
+				DEVELOPMENT_TEAM = F4V84LY292;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sharer;
@@ -690,7 +690,7 @@
 					"-force_load",
 					"$(PROJECT_DIR)/libserver.xcframework/ios-arm64-simulator/libserver-sim.a",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = zhouc.sharerMobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jingyili.sharer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = "non-global";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -712,7 +712,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3B6PX4JP7X;
+				DEVELOPMENT_TEAM = F4V84LY292;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sharer;
@@ -725,7 +725,7 @@
 					"-force_load",
 					"$(PROJECT_DIR)/libserver.xcframework/ios-arm64/libserver-device.a",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = zhouc.sharerMobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jingyili.sharer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = "non-global";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
